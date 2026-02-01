@@ -20,5 +20,10 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
+      - name: Diagnostic Check
+        run: |
+          ls -R
+          cat firebase.json
+
       - name: Deploy to Firebase
-        run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting:socratic-ai-82849 --debug
+        run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --project socratic-ai-82849 --only hosting --debug
