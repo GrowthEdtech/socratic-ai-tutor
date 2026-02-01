@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socratic AI Tutor - Legal</title>
+    <link rel="stylesheet" href="upgrade.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        .legal-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #fff, var(--accent-primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .legal-content h2 {
+            font-size: 1.5rem;
+            margin: 32px 0 16px;
+            color: var(--text-primary);
+        }
+
+        .legal-content p,
+        .legal-content li {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .legal-content ul {
+            margin-left: 20px;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 32px;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="legal-container">
+        <a href="upgrade.html" class="back-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Upgrade
+        </a>
+        <div id="legal-content" class="legal-content">
+            <!-- Content will be injected here -->
+            <p>Loading policy content...</p>
+        </div>
+    </div>
+
+    <script>
+        const policies = {
+            privacy: {
+                title: "Privacy Policy",
+                content: `
+                    <p>Last updated: February 1, 2026</p>
+                    <p>Growth Education Limited ("we", "us", or "our") operates Socratic AI Tutor. This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Service.</p>
+                    <h2>1. Information Collection and Use</h2>
+                    <p>While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to your name and email address ("Personal Information").</p>
+                    <h2>2. Log Data</h2>
+                    <p>Like many site operators, we collect information that your browser sends whenever you visit our Service ("Log Data"). This Log Data may include information such as your computer's IP address, browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages and other statistics.</p>
+                    <h2>3. Cookies</h2>
+                    <p>Cookies are files with small amount of data, which may include an anonymous unique identifier. Cookies are sent to your browser from a web site and stored on your computer's hard drive.</p>
+                    <h2>4. Security</h2>
+                    <p>The security of your Personal Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.</p>
+                    <h2>5. Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy, please contact us at privacy@geledtech.com.</p>
+                `
+            },
+            terms: {
+                title: "Terms of Service",
+                content: `
+                    <p>Last updated: February 1, 2026</p>
+                    <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using Socratic AI Tutor.</p>
+                    <h2>1. Terms</h2>
+                    <p>By accessing the Service, you are agreeing to be bound by these Terms of Service. Socratic AI Tutor operates on a one-time purchase (Energy Pack) basis. There are no recurring subscription fees.</p>
+                    <h2>2. Energy Credits (Zap)</h2>
+                    <p>Energy Credits (Zap) are digital assets purchased for use within the Socratic AI Tutor ecosystem. These credits have no monetary value and cannot be exchanged for cash or transferred between accounts. Credits are consumed based on AI interaction types (e.g., text vs. visual reasoning).</p>
+                    <h2>3. Service Provision</h2>
+                    <p>Growth Education Limited reserves the right to modify the energy cost of specific AI features to reflect changes in computation costs. We strive to provide consistent value for all users.</p>
+                    <h2>4. Governing Law</h2>
+                    <p>These terms and conditions are governed by and construed in accordance with the laws of Hong Kong.</p>
+                `
+            },
+            refund: {
+                title: "Refund Policy",
+                content: `
+                    <p>Last updated: February 1, 2026</p>
+                    <p>At Socratic AI Tutor, we provide immediate access to premium AI tutoring capabilities and digital energy credits (Zap). To maintain the integrity of our service and the costs associated with AI computation, we have a strict refund policy.</p>
+                    <h2>1. All Sales are Final</h2>
+                    <p>All purchases of Energy Packs (Zap Credits) are final and non-refundable. By completing your purchase, you acknowledge and agree that your account will be immediately credited with the digital assets and that you waive any right to a refund or "cooling-off" period.</p>
+                    <h2>2. Non-Expiration</h2>
+                    <p>Purchased Energy Packs do not expire as long as the service is operational. However, they are consumed according to the usage rates in effect at the time of use.</p>
+                    <h2>3. Exceptional Circumstances</h2>
+                    <p>In rare cases of technical failure where the service remains unavailable for a significant period (exceeding 48 hours), we may, at our sole discretion, offer service credits. Please contact support@geledtech.com for assistance.</p>
+                `
+            },
+            compliance: {
+                title: "Compliance & Risk",
+                content: `
+                    <p>Growth Education Limited is committed to maintaining the highest standards of regulatory compliance and data security.</p>
+                    <h2>1. Data Privacy Compliance</h2>
+                    <p>We strictly adhere to the Personal Data (Privacy) Ordinance (PDPO) of Hong Kong. Our data processing agreements with third-party providers (like Google Vertex AI) ensure your data is handled securely and only as instructed.</p>
+                    <h2>2. AI Ethics & Safety</h2>
+                    <p>Our Socratic models are tuned to follow strict educational guidelines. We implement content filtering to prevent inappropriate or harmful responses, ensuring a safe learning environment.</p>
+                    <h2>3. Payment Security</h2>
+                    <p>All financial transactions are handled by PCI DSS compliant payment processors. We do not store your full credit card information on our servers.</p>
+                `
+            },
+            contact: {
+                title: "Contact & Support",
+                content: `
+                    <h2>Get in Touch</h2>
+                    <p>We are here to help you on your learning journey. Choose the most appropriate channel for your inquiry:</p>
+                    <ul>
+                        <li><strong>General Support:</strong> support@geledtech.com</li>
+                        <li><strong>Privacy Inquiries:</strong> privacy@geledtech.com</li>
+                        <li><strong>Business Inquiries:</strong> business@geledtech.com</li>
+                    </ul>
+                    <h2>Office Address</h2>
+                    <p>Growth Education Limited<br>
+                    Room A, 19/F, Max Share Centre<br>
+                    367-373 King's Road, North Point<br>
+                    Hong Kong</p>
+                    <h2>Business Hours</h2>
+                    <p>Monday - Friday: 09:00 - 18:00 (HKT)<br>
+                    Excluding Public Holidays</p>
+                `
+            }
+        };
+
+        function renderPage() {
+            const params = new URLSearchParams(window.location.search);
+            const pageId = params.get('page');
+            const container = document.getElementById('legal-content');
+
+            const policy = policies[pageId] || policies.privacy;
+
+            document.title = `Socratic AI Tutor - ${policy.title}`;
+            container.innerHTML = `
+                <h1>${policy.title}</h1>
+                ${policy.content}
+            `;
+        }
+
+        renderPage();
+    </script>
+</body>
+
+</html>
