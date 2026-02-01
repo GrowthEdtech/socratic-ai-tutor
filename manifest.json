@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Socratic AI Tutor - Guided Learning Assistant",
+  "version": "1.0.0",
+  "description": "24/7 Socratic AI Tutor: Don't just get answers. Master concepts through AI-powered guided questioning and visual reasoning.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "desktopCapture",
+    "identity",
+    "storage",
+    "cookies",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background/service_worker.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/index.html"
+  },
+  "action": {
+    "default_title": "Open Socratic Tutor"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "oauth2": {
+    "client_id": "551520576044-2jnigrp96ulc6auvgsiiafbuqli650f3.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  }
+}

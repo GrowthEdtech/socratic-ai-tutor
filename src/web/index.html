@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socratic AI Pro | Upgrade Your Learning</title>
+    <link rel="stylesheet" href="upgrade.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="glow-container">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <nav>
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="9" cy="10" r="1.5" />
+                        <circle cx="15" cy="10" r="1.5" />
+                        <path d="M12 13l-1 1 1 1" />
+                    </svg>
+                </div>
+                <span>SOCRATIC AI</span>
+            </div>
+            <div class="nav-right">
+                <div class="energy-badge">
+                    <span class="zap">⚡</span> <span id="energy-count">--</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Elevate Your Intelligence</h1>
+            <p class="subtitle">Join thousands of students mastering complex concepts with Socratic Pro.</p>
+        </section>
+
+        <section class="pricing" id="pricing">
+            <div class="card">
+                <div class="card-header">
+                    <h3>ENERGY STARTER</h3>
+                    <div class="price">$19.90</div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">⚡</span> 400 Zap Credits</li>
+                    <li><span class="icon">✓</span> AI Socratic Tutoring</li>
+                    <li><span class="icon">✓</span> 1M Context Window</li>
+                    <li><span class="icon">✓</span> 7-Day History Access</li>
+                </ul>
+                <button class="btn secondary">Buy Starter</button>
+            </div>
+
+            <div class="card pro">
+                <div class="popular-badge">BEST VALUE</div>
+                <div class="card-header">
+                    <h3>ENERGY ADVANCE</h3>
+                    <div class="price">$49</div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">⚡</span> 1,200 Zap Credits</li>
+                    <li><span class="icon">★</span> AI Visual Reasoning</li>
+                    <li><span class="icon">★</span> Priority Gemini API</li>
+                    <li><span class="icon">★</span> 30-Day History</li>
+                </ul>
+                <button class="btn primary">Buy Advance Pack</button>
+            </div>
+
+            <div class="card premium">
+                <div class="card-header">
+                    <h3>ENERGY SCHOLAR</h3>
+                    <div class="price">$69</div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">⚡</span> 1,800 Zap Credits</li>
+                    <li><span class="icon">★</span> Advanced Reasoning Models</li>
+                    <li><span class="icon">★</span> Unlimited Scan History</li>
+                    <li><span class="icon">★</span> 24/7 Priority Support</li>
+                </ul>
+                <button class="btn primary">Buy Scholar Pack</button>
+            </div>
+
+            <div class="card ultimate">
+                <div class="card-header">
+                    <h3>MEGA BUNDLE</h3>
+                    <div class="price">$99</div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">⚡</span> 3,000 Zap Credits</li>
+                    <li><span class="icon">★</span> Personal AI Mentor</li>
+                    <li><span class="icon">★</span> Everything in Scholar +</li>
+                    <li><span class="icon">★</span> Beta Feature Access</li>
+                </ul>
+                <button class="btn primary">Buy Mega Bundle</button>
+            </div>
+        </section>
+
+        <section class="billing-history" id="billing-history">
+            <div class="section-header">
+                <h2>Transaction History</h2>
+                <div class="history-tabs">
+                    <button class="tab-btn active" data-tab="transactions">Transactions</button>
+                    <button class="tab-btn" data-tab="usage">Energy Usage</button>
+                </div>
+            </div>
+
+            <div class="history-container">
+                <!-- Transactions Tab -->
+                <div id="transactions" class="tab-content active">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Plan</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <tr class="empty-state">
+                                <td colspan="4">No transaction history found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Energy Usage Tab -->
+                <div id="usage" class="tab-content">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Change</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usage-body">
+                            <tr class="empty-state">
+                                <td colspan="4">No energy usage recorded.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legitimate Footer with Trust Markers -->
+        <section class="trust-footer">
+            <div class="trust-content">
+                <div class="links">
+                    <a href="legal.html?page=privacy">Privacy Policy</a>
+                    <a href="legal.html?page=terms">Terms of Service</a>
+                    <a href="legal.html?page=refund">Refund Policy</a>
+                    <a href="legal.html?page=compliance">Compliance</a>
+                    <a href="legal.html?page=contact">Contact Support</a>
+                </div>
+                <p class="copyright">&copy; 2026 Socratic AI. All rights reserved.</p>
+                <p class="disclaimer">Socratic AI is a research preview tool. Energy points have no monetary value.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sync Avatar and Energy from Extension
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pictureUrl = urlParams.get('picture');
+            const initial = urlParams.get('initial');
+            const energyValue = urlParams.get('energy');
+
+            const profileContainer = document.querySelector('.user-profile');
+            const energyCountLabel = document.getElementById('energy-count');
+
+            console.log('Sync Data Received:', { pictureUrl, initial, energyValue });
+
+            if (profileContainer) {
+                if (pictureUrl) {
+                    profileContainer.innerHTML = `<img src="${pictureUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+                } else if (initial) {
+                    profileContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent-primary);color:white;font-weight:700;">${initial}</div>`;
+                }
+                profileContainer.style.border = '2px solid var(--accent-primary)';
+            }
+
+            if (energyValue && energyCountLabel) {
+                energyCountLabel.innerText = energyValue;
+            }
+
+            // Tab Switching Logic
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    btn.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Handle Anchor Link for Usage tab
+            if (window.location.hash === '#usage') {
+                const usageBtn = document.querySelector('[data-tab="usage"]');
+                if (usageBtn) usageBtn.click();
+            }
+        });
+    </script>
+</body>
+
+</html>

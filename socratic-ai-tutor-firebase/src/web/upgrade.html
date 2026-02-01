@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socratic AI Pro | Upgrade Your Learning</title>
+    <link rel="stylesheet" href="upgrade.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="glow-container">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <nav>
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="9" cy="10" r="1.5" />
+                        <circle cx="15" cy="10" r="1.5" />
+                        <path d="M12 13l-1 1 1 1" />
+                    </svg>
+                </div>
+                <span>SOCRATIC AI</span>
+            </div>
+            <div class="nav-right">
+                <div class="energy-badge">
+                    <span class="zap">⚡</span> <span id="energy-count">--</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Elevate Your Intelligence</h1>
+            <p class="subtitle">Join thousands of students mastering complex concepts with Socratic Pro.</p>
+        </section>
+
+        <section class="pricing">
+            <div class="card free">
+                <div class="card-header">
+                    <h3>FREE</h3>
+                    <div class="price">$0<span>/mo</span></div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">✓</span> 50 Daily Energy Points</li>
+                    <li><span class="icon">✓</span> Basic Socratic Logic</li>
+                    <li><span class="icon">✓</span> Standard API Access</li>
+                    <li class="disabled"><span class="icon">✕</span> Visual Reasoning</li>
+                    <li class="disabled"><span class="icon">✕</span> 1M Context Window</li>
+                </ul>
+                <button class="btn secondary">Current Plan</button>
+            </div>
+
+            <div class="card pro">
+                <div class="popular-badge">MOST POPULAR</div>
+                <div class="card-header">
+                    <h3>SOCRATIC PRO</h3>
+                    <div class="price">$19<span>/mo</span></div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">★</span> Unlimited Energy Points</li>
+                    <li><span class="icon">★</span> 1M Context Window</li>
+                    <li><span class="icon">★</span> Multimodal Visual Reasoning</li>
+                </ul>
+                <button class="btn primary">Upgrade Pro</button>
+            </div>
+
+            <div class="card premium">
+                <div class="card-header">
+                    <h3>SOCRATIC PREMIUM</h3>
+                    <div class="price">$69<span>/mo</span></div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">★</span> Everything in Pro</li>
+                    <li><span class="icon">★</span> Priority Gemini 1.5 Ultra</li>
+                    <li><span class="icon">★</span> Team Collaboration Context</li>
+                </ul>
+                <button class="btn primary">Upgrade Premium</button>
+            </div>
+
+            <div class="card ultimate">
+                <div class="card-header">
+                    <h3>SOCRATIC ULTIMATE</h3>
+                    <div class="price">$99<span>/mo</span></div>
+                </div>
+                <ul class="features">
+                    <li><span class="icon">★</span> Everything in Premium</li>
+                    <li><span class="icon">★</span> Custom Socratic Models</li>
+                    <li><span class="icon">★</span> 24/7 Dedicated Mentor</li>
+                </ul>
+                <button class="btn primary">Upgrade Ultimate</button>
+            </div>
+        </section>
+
+        <section class="payment-methods">
+            <h3>Accepted Payment Methods</h3>
+            <div class="payment-grid">
+                <div class="payment-card"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa"></div>
+                <div class="payment-card"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+                </div>
+                <div class="payment-card"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Alipay_logo.svg"
+                        alt="Alipay"></div>
+                <div class="payment-card"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/4/4b/WeChat_Pay_logo.svg" alt="WeChat Pay">
+                </div>
+                <div class="payment-card"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/JCB_logo.svg"
+                        alt="JCB"></div>
+                <div class="payment-card"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/a/af/UnionPay_logo.svg" alt="UnionPay">
+                </div>
+                <div class="payment-card"><span>Apple Pay</span></div>
+                <div class="payment-card"><span>Google Pay</span></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Socratic AI. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sync Avatar and Energy from Extension
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pictureUrl = urlParams.get('picture');
+            const energyValue = urlParams.get('energy');
+            const profileContainer = document.querySelector('.user-profile');
+            const energyCountLabel = document.getElementById('energy-count');
+
+            if (pictureUrl && profileContainer) {
+                profileContainer.innerHTML = `<img src="${pictureUrl}" alt="User Avatar" style="width:100%;height:100%;object-fit:cover;display:block;">`;
+                profileContainer.style.border = '2px solid var(--accent-primary)';
+            }
+
+            if (energyValue && energyCountLabel) {
+                energyCountLabel.innerText = energyValue;
+            }
+        });
+    </script>
+</body>
+
+</html>
