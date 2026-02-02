@@ -6,6 +6,8 @@
     --text-primary: #ffffff;
     --text-secondary: hsl(230, 15%, 70%);
     --glass-border: hsla(0, 0%, 100%, 0.1);
+    --glass-glow: hsla(200, 100%, 65%, 0.05);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
     --transition-standard: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -275,7 +277,125 @@ body.is-authenticated .subtitle {
     }
 }
 
-/* Billing History */
+/* Energy Consumption Guide */
+.energy-rules {
+    margin: 80px 0;
+    padding: 60px 0;
+    position: relative;
+    width: 100%;
+}
+
+.rules-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.rules-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.rules-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent-primary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rules-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 10px;
+}
+
+.rule-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 35px;
+    transition: var(--transition-standard);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top left, var(--glass-glow), transparent);
+    pointer-events: none;
+}
+
+.rule-card:hover {
+    transform: translateY(-8px);
+    border-color: hsla(200, 100%, 65%, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9),
+        0 0 20px hsla(200, 100%, 65%, 0.1);
+}
+
+.rule-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px hsla(200, 100%, 65%, 0.3));
+}
+
+.rule-card h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.rule-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    flex: 1;
+}
+
+.rule-cost {
+    background: hsla(200, 100%, 65%, 0.1);
+    color: var(--accent-primary);
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid hsla(200, 100%, 65%, 0.2);
+    box-shadow: inset 0 0 10px hsla(200, 100%, 65%, 0.05);
+}
+
+.rules-note {
+    text-align: center;
+    margin-top: 40px;
+    color: hsla(0, 0%, 100%, 0.35);
+    font-size: 0.85rem;
+    font-style: italic;
+    letter-spacing: 0.3px;
+}
+
+/* Billing History Section Cleanup */
 .billing-history {
     margin-top: 40px;
 }
