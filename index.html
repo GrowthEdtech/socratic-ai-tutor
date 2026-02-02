@@ -28,18 +28,22 @@
                 </div>
                 <span>SOCRATIC AI</span>
             </div>
-            <div class="nav-right">
+            <div class="nav-right" id="nav-user-controls">
                 <div class="energy-badge">
                     <span class="zap">⚡</span> <span id="energy-count">--</span>
                 </div>
-                <div class="user-profile">
+                <div class="user-profile" id="user-profile">
                     <div class="avatar-placeholder"></div>
                 </div>
+                <!-- Login Button (Hidden when authenticated) -->
+                <button id="web-login-btn" class="btn primary"
+                    style="display: none; padding: 8px 16px; font-size: 0.9rem;">Sync with Google</button>
             </div>
         </div>
     </nav>
 
     <main>
+        <!-- ... existing content ... -->
         <section class="hero">
             <h1>Elevate Your Intelligence</h1>
             <p class="subtitle">Join thousands of students mastering complex concepts with Socratic Pro.</p>
@@ -170,54 +174,101 @@
         </section>
     </main>
 
-    <script>
-        // Sync Avatar and Energy from Extension
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const pictureUrl = urlParams.get('picture');
-            const initial = urlParams.get('initial');
-            const energyValue = urlParams.get('energy');
+    <!-- Firebase SDK Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            const profileContainer = document.querySelector('.user-profile');
-            const energyCountLabel = document.getElementById('energy-count');
+        // Firebase Configuration (Matching Extension)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTn4TXLQCQHvtU_fwk-8lZd-6Nx5Udj7M",
+            authDomain: "socratic-ai-82849.firebaseapp.com",
+            projectId: "socratic-ai-82849",
+            storageBucket: "socratic-ai-82849.firebasestorage.app",
+            messagingSenderId: "528705306538",
+            appId: "1:528705306538:web:2982f568ec05ee08a575d3"
+        };
 
-            console.log('Sync Data Received:', { pictureUrl, initial, energyValue });
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
-            if (profileContainer) {
-                if (pictureUrl) {
-                    profileContainer.innerHTML = `<img src="${pictureUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;display:block;">`;
-                } else if (initial) {
-                    profileContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent-primary);color:white;font-weight:700;">${initial}</div>`;
+        const energyCountLabel = document.getElementById('energy-count');
+        const profileContainer = document.getElementById('user-profile');
+        const loginBtn = document.getElementById('web-login-btn');
+
+        // 1. Initial Sync from URL Params (Fast display)
+        const urlParams = new URLSearchParams(window.location.search);
+        const pictureUrl = urlParams.get('picture');
+        const initial = urlParams.get('initial');
+        const energyValue = urlParams.get('energy');
+
+        if (energyValue) energyCountLabel.innerText = energyValue;
+        if (pictureUrl) {
+            profileContainer.innerHTML = `<img src="${pictureUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;">`;
+        } else if (initial) {
+            profileContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent-primary);color:white;font-weight:700;border-radius:50%;">${initial}</div>`;
+        }
+
+        // 2. Real-time Firebase Sync
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Web Sync: Authenticated as", user.email);
+                loginBtn.style.display = 'none';
+                profileContainer.style.display = 'block';
+
+                // Update Avatar
+                if (user.photoURL) {
+                    profileContainer.innerHTML = `<img src="${user.photoURL}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;">`;
                 }
-                profileContainer.style.border = '2px solid var(--accent-primary)';
-            }
 
-            if (energyValue && energyCountLabel) {
-                energyCountLabel.innerText = energyValue;
-            }
-
-            // Tab Switching Logic
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tabId = btn.getAttribute('data-tab');
-
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-
-                    btn.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
+                // Listen for Energy Changes
+                const userDocRef = doc(db, 'users', user.uid);
+                onSnapshot(userDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        energyCountLabel.innerText = data.energyBalance || 0;
+                        console.log("Web Sync: Energy Updated ->", data.energyBalance);
+                    }
                 });
-            });
-
-            // Handle Anchor Link for Usage tab
-            if (window.location.hash === '#usage') {
-                const usageBtn = document.querySelector('[data-tab="usage"]');
-                if (usageBtn) usageBtn.click();
+            } else {
+                console.log("Web Sync: Not Authenticated");
+                loginBtn.style.display = 'block';
+                // Keep the URL param data if available, otherwise stay at --
             }
         });
+
+        // 3. Login Action
+        loginBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Login failed:", error);
+                alert("Synchronization failed. Please check your browser's pop-up blocker.");
+            }
+        });
+
+        // 4. Tab Switching Logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Handle Anchor Link
+        if (window.location.hash === '#usage') {
+            const usageBtn = document.querySelector('[data-tab="usage"]');
+            if (usageBtn) usageBtn.click();
+        }
     </script>
 </body>
 
