@@ -79,13 +79,25 @@
 3.  確認 Firestore 規則（Security Rules）允許用戶讀取自己的文檔。
 
 ---
-
+ 
+## 🛡️ 5. 安全合規與風險防控 (Compliance & Safety)
+ 
+本項目曾於開發階段觸發 Google 「網路釣魚 (Phishing)」自動風控，為維護域名商譽與專案穩定，必須嚴格執行以下標準：
+ 
+1.  **支付標誌管控**：嚴禁在 `.web.app` 或 `.github.io` 子域名上放置過多第三方支付（如 Visa, Mastercard）的彩色 Logo。
+2.  **信任標記 (Trust Markers)**：所有升級頁面必須具備完整的法律腳註（隱私權政策、服務條款、聯絡電子郵件）。
+3.  **域名策略**：生產環境強制使用已驗證的高權重自定義域名 (`socratic.geledtech.com`)，禁止直接對外宣傳原生 Firebase/GitHub 分配的網域。
+4.  **申訴存檔**：本專案已通過 Google Trust & Safety 團隊的人工審核 (Ticket ID: BSF6ZOPLELYXZ5YZQDOWRUJRCA)。
+ 
+---
+ 
 ## 📜 項目歷史紀錄 (Changelog Highlights)
 - **2026/02/01**: 完成從 Firebase Hosting 遷移至 GitHub Pages。
 - **2026/02/02**: 實現 Web 端與 Extension 的 Firebase 實時同步。
 - **2026/02/02**: 將 Web 端登入機制優化為跳轉模式 (Redirect) 以解決阻擋問題。
 - **2026/02/02**: 完成 PayPal Live 正式環境接入，實現商業化閉環。
 - **2026/02/02**: 部署 Firebase Cloud Functions (Gen 2)，建立 PayPal Webhook 異步充值機制。
+- **2026/02/02**: 完成 Google Cloud Trust & Safety 申訴流程，優化 Phishing 防控標準。
 - **2026/02/02**: 建立動態電力消耗等級 (L1, L2, L3) 並在 UI 公示。
 
 ---
