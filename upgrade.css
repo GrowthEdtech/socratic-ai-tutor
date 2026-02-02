@@ -598,7 +598,8 @@ body.is-authenticated .subtitle {
     transition: background-color .218s, border-color .218s, box-shadow .218s;
     height: 36px;
     /* Essential Fixed Constraint */
-    width: auto;
+    padding: 0 16px 0 0;
+    width: fit-content;
     overflow: hidden;
     user-select: none;
 }
@@ -634,6 +635,8 @@ body.is-authenticated .subtitle {
     font-size: 14px;
     font-weight: 600;
     padding-left: 12px;
+    padding-right: 8px;
+    letter-spacing: 0.2px;
 }
 
 /* Checkout Modal Styling */
