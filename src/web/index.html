@@ -264,7 +264,7 @@
                     <a href="legal.html?page=compliance">Compliance</a>
                     <a href="legal.html?page=contact">Contact Support</a>
                 </div>
-                <p class="copyright">&copy; 2026 Socratic AI. All rights reserved.</p>
+                <p class="copyright">&copy; 2026 Socratic AI. All rights reserved. 版權歸屬 Growth Education Limited</p>
                 <p class="disclaimer">Socratic AI is a research preview tool. Energy points have no monetary value.</p>
             </div>
         </section>
@@ -474,9 +474,9 @@
             document.getElementById('summary-name').innerText = pkg.name;
             document.getElementById('summary-zaps').innerText = `+${pkg.zaps}⚡`;
             document.getElementById('summary-price').innerText = `$${pkg.price}`;
-            
+
             checkoutModal.classList.add('active');
-            
+
             // Clear existing and init fresh PayPal button for the selection
             document.getElementById('paypal-button-container-checkout').innerHTML = '';
             initPayPalButton('#paypal-button-container-checkout', pkg.price, parseInt(pkg.zaps), pkg.name);
