@@ -79,22 +79,29 @@ body.is-authenticated .glow-1 {
 }
 
 nav {
-    width: 100%;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 100;
-    background: hsla(230, 25%, 5%, 0.6);
+    left: 0;
+    right: 0;
+    background: hsla(230, 25%, 5%, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--glass-border);
+    height: 72px;
+    /* Precision Lock */
+    display: flex;
+    align-items: center;
 }
 
 .nav-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 20px;
+    padding: 0 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .nav-right {
@@ -571,45 +578,62 @@ body.is-authenticated .subtitle {
     cursor: default;
 }
 
-/* Official Google Sign-In Button Styling */
+/* Official Google Sign-In Button Styling - Precision Scale */
 .google-btn {
-    display: inline-flex;
+    display: flex;
+    /* Robust flex column/row control */
+    flex-direction: row;
     align-items: center;
     background-color: #ffffff;
     border: 1px solid transparent;
     border-radius: 4px;
-    /* Google Standard */
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3.125px 0 rgba(60, 64, 67, 0.149);
     cursor: pointer;
     font-family: 'Outfit', sans-serif;
-    padding: 2px;
+    padding: 1px;
+    /* Google standard internal padding */
     transition: background-color .218s, border-color .218s, box-shadow .218s;
+    height: 36px;
+    /* Essential Fixed Constraint */
+    width: auto;
+    overflow: hidden;
+    user-select: none;
 }
 
 .google-btn:hover {
-    box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3);
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302), 0 4px 8px 3px rgba(60, 64, 67, 0.149);
+    background-color: #f7f8f8;
 }
 
 .google-btn:active {
-    background-color: #eeeeee;
+    background-color: #e8eaed;
 }
 
 .google-btn-icon-wrapper {
     display: flex;
-    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+    border-radius: 3px;
+    margin-right: 0;
 }
 
 .google-btn-icon {
     width: 18px;
     height: 18px;
+    display: block;
 }
 
 .google-btn-text {
-    color: rgba(0, 0, 0, 0.54);
+    color: #3c4043;
     font-size: 14px;
     font-weight: 600;
-    padding: 10px 12px 10px 0;
+    padding-left: 12px;
+    padding-right: 12px;
     white-space: nowrap;
+    letter-spacing: 0.25px;
 }
 
 .trust-footer {
