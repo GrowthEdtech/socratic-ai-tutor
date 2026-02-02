@@ -437,7 +437,125 @@ body.is-authenticated .subtitle {
     }
 }
 
-/* Trust Bar (Social Proof) */
+/* Socratic Demo */
+.socratic-demo {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.demo-container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    padding: 60px;
+    align-items: center;
+    border-radius: 48px;
+}
+
+.demo-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chat-bubble {
+    padding: 20px 24px;
+    border-radius: 24px;
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+.chat-bubble.user {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.ai {
+    align-self: flex-end;
+    background: rgba(100, 108, 255, 0.1);
+    color: var(--accent-secondary);
+    border-bottom-right-radius: 4px;
+    border: 1px solid rgba(100, 108, 255, 0.2);
+}
+
+.demo-insight h4 {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    color: #fff;
+}
+
+.demo-insight p {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.insight-badge {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.2), transparent);
+    border: 1px solid var(--accent-primary);
+    border-radius: 100px;
+    color: var(--accent-primary);
+    font-weight: 700;
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.testimonial-card {
+    padding: 40px;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.testimonial-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #fff;
+    margin-bottom: 32px;
+    font-style: italic;
+}
+
+.testimonial-card .author {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card .name {
+    font-weight: 700;
+    color: var(--accent-secondary);
+}
+
+.testimonial-card .role {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+@media (max-width: 968px) {
+    .demo-container {
+        grid-template-columns: 1fr;
+        padding: 40px;
+    }
+}
+
 .trust-bar {
     padding: 60px 20px;
     text-align: center;
