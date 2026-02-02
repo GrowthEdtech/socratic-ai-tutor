@@ -585,7 +585,10 @@ body.is-authenticated .subtitle {
     flex-direction: row;
     align-items: center;
     background-color: #ffffff;
-    border: 1px solid transparent;
+    border: none;
+    /* Reset button border */
+    outline: none;
+    /* Reset button outline */
     border-radius: 4px;
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3.125px 0 rgba(60, 64, 67, 0.149);
     cursor: pointer;

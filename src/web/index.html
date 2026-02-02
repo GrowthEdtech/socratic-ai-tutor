@@ -39,7 +39,7 @@
                     <div class="avatar-placeholder"></div>
                 </div>
                 <!-- Login Button (Guest Only) - Official Google Brand -->
-                <div id="web-login-btn" class="google-btn state-guest-only">
+                <button id="web-login-btn" class="google-btn state-guest-only" type="button">
                     <div class="google-btn-icon-wrapper">
                         <svg class="google-btn-icon" viewBox="0 0 48 48">
                             <path fill="#EA4335"
@@ -58,7 +58,7 @@
                         </svg>
                     </div>
                     <span class="google-btn-text">Sign in with Google</span>
-                </div>
+                </button>
                 <!-- Logout Button (User Only) -->
                 <button id="web-logout-btn" class="btn secondary state-user-only"
                     style="padding: 6px 12px; font-size: 0.8rem; border-color: rgba(255,255,255,0.2);">Sign
@@ -242,7 +242,7 @@
     <!-- Firebase SDK Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, onSnapshot, updateDoc, arrayUnion, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Firebase Configuration (Matching Extension)
@@ -278,14 +278,14 @@
             profileContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent-primary);color:white;font-weight:700;border-radius:50%;">${initial}</div>`;
         }
 
-        // 2. Real-time Firebase Sync
+        // 2. Real-time Firebase Sync (Consolidated)
         onAuthStateChanged(auth, (user) => {
             const body = document.body;
             const heroTitle = document.querySelector('.hero h1');
             const heroSubtitle = document.querySelector('.hero p');
 
             if (user) {
-                console.log("Web State: Authenticated User Mode");
+                console.log("Web Auth: Active User Session Detected", user.uid);
                 body.classList.add('is-authenticated');
 
                 // Update Hero for Personal Dashboard Mode
@@ -307,14 +307,15 @@
                     }
                 });
 
-                // Initialize PayPal Buttons
+                // Initialize PayPal Buttons (Only if authenticated)
+                document.querySelectorAll('.paypal-container').forEach(c => c.innerHTML = '');
                 initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
                 initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
                 initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
                 initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
 
             } else {
-                console.log("Web State: Guest Mode");
+                console.log("Web Auth: Guest Mode - Ready for Sign-In");
                 body.classList.remove('is-authenticated');
 
                 // Reset Hero for Promotional Mode
@@ -357,9 +358,20 @@
             `).join('');
         }
 
-        // 4. Login Action (Redirect flow to bypass pop-up blockers)
-        loginBtn.addEventListener('click', () => {
-            signInWithRedirect(auth, provider);
+        // 4. Login Action (Redirect flow with diagnostic logging)
+        loginBtn.addEventListener('click', (e) => {
+            console.log("Auth Trigger: Login button clicked", e.target);
+            try {
+                // We attempt redirect first as it's the most reliable on mobile
+                signInWithRedirect(auth, provider);
+                console.log("Auth Trigger: signInWithRedirect initiated");
+            } catch (err) {
+                console.error("Auth Trigger Error - Attempting Popup Fallback:", err);
+                signInWithPopup(auth, provider).catch(pErr => {
+                    console.error("Popup Fallback Error:", pErr);
+                    alert("Authentication failed. Please check your browser's third-party cookie settings.");
+                });
+            }
         });
 
         // 5. Logout Action
@@ -448,19 +460,7 @@
             }).render(containerId);
         }
 
-        // Initialize buttons for different packs
-        // Note: In a real app, you'd check auth before rendering buttons
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Hide fallback buttons and show PayPal
-                document.querySelectorAll('.btn.primary, .btn.secondary').forEach(b => b.style.display = 'none');
-
-                initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
-                initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
-                initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
-                initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
-            }
-        });
+        // Remove redundant redundant auth listener to prevent state racing
     </script>
 </body>
 
