@@ -492,6 +492,47 @@
         </section>
 
         <!-- Legitimate Footer with Trust Markers -->
+        <!-- FAQ Section -->
+        <section class="faq reveal" id="faq">
+            <div class="section-label">CLARITY FIRST</div>
+            <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+            <div class="faq-container">
+                <div class="faq-item glass-flat">
+                    <div class="faq-question">What are Zap Credits?</div>
+                    <div class="faq-answer">Zap Credits are the atomic units of our reasoning engine. Each "Zap"
+                        represents one deep-reasoning cycle, multi-modal scan, or context retrieval event.</div>
+                </div>
+                <div class="faq-item glass-flat">
+                    <div class="faq-question">How is this different from ChatGPT or Claude?</div>
+                    <div class="faq-answer">While general AIs give you answers, Socratic Pro is a pedagogical tool. We
+                        use a proprietary "Reasoning Scaffolding" layer to guide you through the process, ensuring you
+                        actually LEARN the material.</div>
+                </div>
+                <div class="faq-item glass-flat">
+                    <div class="faq-question">Can I cancel my subscription?</div>
+                    <div class="faq-answer">Our current plans are one-time Top-Up bundles. You only pay for what you
+                        need, with no recurring monthly fees or hidden costs.</div>
+                </div>
+                <div class="faq-item glass-flat">
+                    <div class="faq-question">Is my data secure?</div>
+                    <div class="faq-answer">Absolutely. We use Google-grade encryption and do not train our models on
+                        your private intellectual property. Your research stays yours.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA: The Conversion Closer -->
+        <section class="final-cta reveal">
+            <div class="cta-content glass-flat">
+                <h2>Ready to redefine your intelligence?</h2>
+                <p>Join thousands of scholars from MIT, Oxford, and Stanford who are already mastering their curriculum
+                    with Socratic AI.</p>
+                <div class="cta-actions">
+                    <a href="#pricing" class="btn primary">Start Your Journey</a>
+                </div>
+            </div>
+        </section>
+
         <section class="trust-footer">
             <div class="trust-content">
                 <div class="links">
@@ -841,6 +882,15 @@
                 card.style.setProperty('--x', `${x}px`);
                 card.style.setProperty('--y', `${y}px`);
             });
+        });
+
+        // 7. Sticky Nav Toggle
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
