@@ -39,7 +39,8 @@
                     <div class="avatar-placeholder"></div>
                 </div>
                 <!-- Login Button (Guest Only) - Official Google Brand -->
-                <button id="web-login-btn" class="google-btn state-guest-only" type="button">
+                <button id="web-login-btn" class="google-btn state-guest-only" type="button"
+                    onclick="window.triggerGoogleLogin()">
                     <div class="google-btn-icon-wrapper">
                         <svg class="google-btn-icon" viewBox="0 0 48 48">
                             <path fill="#EA4335"
@@ -86,8 +87,8 @@
                     <li><span class="icon">✓</span> 1M Context Window</li>
                     <li><span class="icon">✓</span> 7-Day History Access</li>
                 </ul>
-                <button class="btn secondary state-guest-only"
-                    onclick="document.getElementById('web-login-btn').click()">Sign in to Buy</button>
+                <button class="btn secondary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                    Buy</button>
                 <div id="paypal-button-container-starter" class="paypal-container state-user-only"></div>
             </div>
 
@@ -103,8 +104,8 @@
                     <li><span class="icon">★</span> Priority Gemini API</li>
                     <li><span class="icon">★</span> 30-Day History</li>
                 </ul>
-                <button class="btn primary state-guest-only"
-                    onclick="document.getElementById('web-login-btn').click()">Sign in to Buy</button>
+                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                    Buy</button>
                 <div id="paypal-button-container-advance" class="paypal-container state-user-only"></div>
             </div>
 
@@ -119,8 +120,8 @@
                     <li><span class="icon">★</span> Unlimited Scan History</li>
                     <li><span class="icon">★</span> 24/7 Priority Support</li>
                 </ul>
-                <button class="btn primary state-guest-only"
-                    onclick="document.getElementById('web-login-btn').click()">Sign in to Buy</button>
+                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                    Buy</button>
                 <div id="paypal-button-container-scholar" class="paypal-container state-user-only"></div>
             </div>
 
@@ -135,8 +136,8 @@
                     <li><span class="icon">★</span> Everything in Scholar +</li>
                     <li><span class="icon">★</span> Beta Feature Access</li>
                 </ul>
-                <button class="btn primary state-guest-only"
-                    onclick="document.getElementById('web-login-btn').click()">Sign in to Buy</button>
+                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                    Buy</button>
                 <div id="paypal-button-container-mega" class="paypal-container state-user-only"></div>
             </div>
         </section>
@@ -265,6 +266,29 @@
         const loginBtn = document.getElementById('web-login-btn');
         const logoutBtn = document.getElementById('web-logout-btn');
 
+        // Global Error Capture
+        window.onerror = function (msg, url, line) {
+            alert("System Error: " + msg + "\nAt: " + line);
+            return false;
+        };
+
+        // 0. Global Auth Function (Unified for all buttons)
+        window.triggerGoogleLogin = async function () {
+            console.log("Auth Sequence: triggerGoogleLogin called");
+            try {
+                // Primary method: Popup for clear feedback
+                await signInWithPopup(auth, provider);
+                console.log("Auth Sequence: Popup successful");
+            } catch (error) {
+                console.warn("Auth Sequence: Popup failed, trying redirect...", error);
+                if (error.code === "auth/popup-blocked" || error.code === "auth/cancelled-popup-request") {
+                    signInWithRedirect(auth, provider);
+                } else {
+                    alert("Authentication Error: " + error.code + "\n" + error.message);
+                }
+            }
+        };
+
         // 1. Initial Sync from URL Params (Fast display)
         const urlParams = new URLSearchParams(window.location.search);
         const pictureUrl = urlParams.get('picture');
@@ -308,11 +332,14 @@
                 });
 
                 // Initialize PayPal Buttons (Only if authenticated)
-                document.querySelectorAll('.paypal-container').forEach(c => c.innerHTML = '');
-                initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
-                initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
-                initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
-                initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
+                const containers = document.querySelectorAll('.paypal-container');
+                if (containers.length > 0) {
+                    containers.forEach(c => c.innerHTML = '');
+                    initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
+                    initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
+                    initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
+                    initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
+                }
 
             } else {
                 console.log("Web Auth: Guest Mode - Ready for Sign-In");
@@ -358,21 +385,13 @@
             `).join('');
         }
 
-        // 4. Login Action (Redirect flow with diagnostic logging)
-        loginBtn.addEventListener('click', (e) => {
-            console.log("Auth Trigger: Login button clicked", e.target);
-            try {
-                // We attempt redirect first as it's the most reliable on mobile
-                signInWithRedirect(auth, provider);
-                console.log("Auth Trigger: signInWithRedirect initiated");
-            } catch (err) {
-                console.error("Auth Trigger Error - Attempting Popup Fallback:", err);
-                signInWithPopup(auth, provider).catch(pErr => {
-                    console.error("Popup Fallback Error:", pErr);
-                    alert("Authentication failed. Please check your browser's third-party cookie settings.");
-                });
-            }
-        });
+        // 4. Attach Listeners
+        if (loginBtn) {
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.triggerGoogleLogin();
+            });
+        }
 
         // 5. Logout Action
         logoutBtn.addEventListener('click', () => {
