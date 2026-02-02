@@ -6,6 +6,24 @@
     --text-primary: #ffffff;
     --text-secondary: hsl(230, 15%, 70%);
     --glass-border: hsla(0, 0%, 100%, 0.1);
+    --transition-standard: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- State Management Utilities --- */
+.state-user-only {
+    display: none !important;
+}
+
+body.is-authenticated .state-user-only {
+    display: block !important;
+}
+
+body.is-authenticated div.energy-badge.state-user-only {
+    display: flex !important;
+}
+
+body.is-authenticated .state-guest-only {
+    display: none !important;
 }
 
 body {
@@ -38,6 +56,12 @@ body {
     border-radius: 50%;
     filter: blur(100px);
     opacity: 0.15;
+    transition: var(--transition-standard);
+}
+
+body.is-authenticated .glow-1 {
+    transform: translate(20%, -10%);
+    opacity: 0.08;
 }
 
 .glow-1 {
@@ -152,6 +176,13 @@ main {
 .hero {
     text-align: center;
     margin-bottom: 60px;
+    padding: 40px 0;
+    transition: var(--transition-standard);
+}
+
+body.is-authenticated .hero {
+    padding: 20px 0;
+    margin-bottom: 30px;
 }
 
 .hero h1 {
@@ -162,11 +193,22 @@ main {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
+    transition: var(--transition-standard);
+}
+
+body.is-authenticated .hero h1 {
+    font-size: 2.2rem;
 }
 
 .subtitle {
     font-size: 1.25rem;
     color: var(--text-secondary);
+    transition: var(--transition-standard);
+}
+
+body.is-authenticated .subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
 /* Section Headers */
