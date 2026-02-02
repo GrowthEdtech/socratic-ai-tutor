@@ -68,6 +68,10 @@
     </nav>
 
     <main>
+        <!-- Background Decorative Orbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
         <!-- ... existing content ... -->
         <section class="hero">
             <div class="hero-badge">Next-Gen Socratic Reasoning</div>
@@ -81,7 +85,7 @@
         </section>
 
         <!-- Product Pillars: The "Why" Section -->
-        <section id="features" class="pillars">
+        <section id="features" class="pillars reveal">
             <div class="section-label">THE SOCRATIC EDGE</div>
             <h2 class="section-title">Beyond Artificial Intelligence.<br><span>Intellectual Partnership.</span></h2>
 
@@ -107,8 +111,34 @@
             </div>
         </section>
 
+        <!-- The Learning Flywheel: Scientific Foundation -->
+        <section class="flywheel reveal">
+            <div class="section-label">THE COGNITIVE ENGINE</div>
+            <h2 class="section-title">The Science of <span>Self-Actualization</span></h2>
+            <div class="flywheel-grid">
+                <div class="flywheel-step">
+                    <div class="step-num">01</div>
+                    <h4>Diagnostic Priming</h4>
+                    <p>Instead of solving, we probe. The AI identifies the boundaries of your current knowledge through
+                        targeted inquiry.</p>
+                </div>
+                <div class="flywheel-step">
+                    <div class="step-num">02</div>
+                    <h4>Cognitive Scaffolding</h4>
+                    <p>We provide the minimum viable hint needed to spark the "Aha!" moment. This strengthens neural
+                        pathways related to logic retrieval.</p>
+                </div>
+                <div class="flywheel-step">
+                    <div class="step-num">03</div>
+                    <h4>Logical Synthesis</h4>
+                    <p>You solve the problem. The AI then asks you to explain the solution back, cementing the logic
+                        into your long-term memory.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Problem/Solution: The Impact Layer -->
-        <section class="impact-viz">
+        <section class="impact-viz reveal">
             <div class="impact-content">
                 <div class="text-block">
                     <div class="tag">SOLVING THE IMPOSSIBLE</div>
@@ -138,7 +168,7 @@
         </section>
 
         <!-- Interactive Socratic Demo -->
-        <section class="socratic-demo state-guest-only">
+        <section class="socratic-demo state-guest-only reveal">
             <div class="section-label">THE METHOD IN ACTION</div>
             <h2 class="section-title">See How We Teach,<br><span>Not Just Tell.</span></h2>
 
@@ -170,7 +200,7 @@
         </section>
 
         <!-- Case Studies / Testimonials -->
-        <section class="testimonials">
+        <section class="testimonials reveal">
             <div class="section-label">SCHOLAR VOICES</div>
             <h2 class="section-title">High-Stakes Results</h2>
             <div class="testimonial-grid">
@@ -201,7 +231,7 @@
             </div>
         </section>
 
-        <section class="trust-bar state-guest-only">
+        <section class="trust-bar state-guest-only reveal">
             <p>Empowering scholars at the world's most innovative institutions</p>
             <div class="logo-cloud">
                 <span>OXFORD</span>
@@ -472,6 +502,9 @@
                     <a href="legal.html?page=contact">Contact Support</a>
                 </div>
                 <p class="copyright">&copy; 2026 Socratic AI. All rights reserved. 版權歸屬 Growth Education Limited</p>
+                <div class="security-badge">
+                    <span class="icon">🛡️</span> Google-grade encryption & SOC2 Compliance
+                </div>
                 <p class="disclaimer">Socratic AI is a research preview tool. Energy points have no monetary value.</p>
             </div>
         </section>
@@ -788,6 +821,27 @@
         }
 
         // Remove redundant redundant auth listener to prevent state racing
+        // 5. Scroll Reveal Logic
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // 6. Dynamic Card Highlights
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
     </script>
 </body>
 
