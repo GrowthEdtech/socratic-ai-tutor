@@ -86,9 +86,9 @@
                     <li><span class="icon">✓</span> 1M Context Window</li>
                     <li><span class="icon">✓</span> 7-Day History Access</li>
                 </ul>
-                <button class="btn secondary state-guest-only auth-trigger">Sign in to
-                    Buy</button>
-                <div id="paypal-button-container-starter" class="paypal-container state-user-only"></div>
+                <button class="btn secondary state-guest-only auth-trigger">Sign in to Buy</button>
+                <button class="btn secondary state-user-only buy-trigger" data-id="starter" data-price="19.90"
+                    data-zaps="400" data-name="Energy Starter">Upgrade Now</button>
             </div>
 
             <div class="card pro">
@@ -103,9 +103,9 @@
                     <li><span class="icon">★</span> Priority Gemini API</li>
                     <li><span class="icon">★</span> 30-Day History</li>
                 </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to
-                    Buy</button>
-                <div id="paypal-button-container-advance" class="paypal-container state-user-only"></div>
+                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                <button class="btn primary state-user-only buy-trigger" data-id="advance" data-price="49.00"
+                    data-zaps="1200" data-name="Energy Advance">Upgrade Now</button>
             </div>
 
             <div class="card premium">
@@ -119,9 +119,9 @@
                     <li><span class="icon">★</span> Unlimited Scan History</li>
                     <li><span class="icon">★</span> 24/7 Priority Support</li>
                 </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to
-                    Buy</button>
-                <div id="paypal-button-container-scholar" class="paypal-container state-user-only"></div>
+                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                <button class="btn primary state-user-only buy-trigger" data-id="scholar" data-price="69.00"
+                    data-zaps="1800" data-name="Energy Scholar">Upgrade Now</button>
             </div>
 
             <div class="card ultimate">
@@ -135,11 +135,42 @@
                     <li><span class="icon">★</span> Everything in Scholar +</li>
                     <li><span class="icon">★</span> Beta Feature Access</li>
                 </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to
-                    Buy</button>
-                <div id="paypal-button-container-mega" class="paypal-container state-user-only"></div>
+                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                <button class="btn primary state-user-only buy-trigger" data-id="mega" data-price="99.00"
+                    data-zaps="3000" data-name="Mega Bundle">Upgrade Now</button>
             </div>
         </section>
+
+        <!-- Checkout Modal (Confirmation Step) -->
+        <div id="checkout-modal" class="modal-overlay">
+            <div class="modal-content glass-flat">
+                <button class="modal-close" id="close-checkout">&times;</button>
+                <div class="modal-header">
+                    <h2>Verify Your Order</h2>
+                    <p>Review your selection before proceeding to secure payment.</p>
+                </div>
+                <div class="order-summary">
+                    <div class="summary-item">
+                        <span class="label">Package</span>
+                        <span id="summary-name" class="value">--</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Resource</span>
+                        <span id="summary-zaps" class="value">--</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-item total">
+                        <span class="label">Total Amount</span>
+                        <span id="summary-price" class="value">--</span>
+                    </div>
+                </div>
+                <div class="payment-area">
+                    <div id="paypal-button-container-checkout"></div>
+                </div>
+                <p class="modal-footer-note">Secure transaction processed via PayPal. Credits are applied instantly upon
+                    success.</p>
+            </div>
+        </div>
 
         <!-- Energy Consumption Guide -->
         <section class="energy-rules">
@@ -368,15 +399,8 @@
                     }
                 });
 
-                // Initialize PayPal Buttons (Only if authenticated)
-                const containers = document.querySelectorAll('.paypal-container');
-                if (containers.length > 0) {
-                    containers.forEach(c => c.innerHTML = '');
-                    initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
-                    initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
-                    initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
-                    initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
-                }
+                // NO LONGER INITIALIZING PAYPAL BUTTONS ON LOAD
+                // We do it only when the modal opens.
 
             } else {
                 console.log("Web Auth: Guest Mode - Ready for Sign-In");
@@ -387,9 +411,6 @@
                 heroSubtitle.innerText = "Join thousands of students mastering complex concepts with Socratic Pro.";
 
                 energyCountLabel.innerText = 'Login';
-
-                // Clear stateful content
-                document.querySelectorAll('.paypal-container').forEach(c => c.innerHTML = '');
             }
         });
 
@@ -425,14 +446,53 @@
         // 4. Delegated Event Listeners (Bulletproof Pattern)
         document.addEventListener('click', (e) => {
             // Check if clicked element is an auth trigger or child of one
-            const target = e.target.closest('#web-login-btn') || e.target.closest('.auth-trigger');
-            if (target) {
+            const authTarget = e.target.closest('#web-login-btn') || e.target.closest('.auth-trigger');
+            if (authTarget) {
                 e.preventDefault();
                 runGoogleAuthFlow();
+                return;
+            }
+
+            // CHECKOUT FLOW TRIGGERS
+            const buyTarget = e.target.closest('.buy-trigger');
+            if (buyTarget) {
+                const pkg = {
+                    id: buyTarget.dataset.id,
+                    price: buyTarget.dataset.price,
+                    zaps: buyTarget.dataset.zaps,
+                    name: buyTarget.dataset.name
+                };
+                openCheckoutModal(pkg);
             }
         });
 
-        console.log("System Status: Auth Module Fully Initialized & Delegated");
+        // 4a. Modal Management
+        const checkoutModal = document.getElementById('checkout-modal');
+        const closeCheckout = document.getElementById('close-checkout');
+
+        function openCheckoutModal(pkg) {
+            document.getElementById('summary-name').innerText = pkg.name;
+            document.getElementById('summary-zaps').innerText = `+${pkg.zaps}⚡`;
+            document.getElementById('summary-price').innerText = `$${pkg.price}`;
+            
+            checkoutModal.classList.add('active');
+            
+            // Clear existing and init fresh PayPal button for the selection
+            document.getElementById('paypal-button-container-checkout').innerHTML = '';
+            initPayPalButton('#paypal-button-container-checkout', pkg.price, parseInt(pkg.zaps), pkg.name);
+        }
+
+        closeCheckout.addEventListener('click', () => {
+            checkoutModal.classList.remove('active');
+            document.getElementById('paypal-button-container-checkout').innerHTML = '';
+        });
+
+        // Close on outside click
+        window.onclick = (event) => {
+            if (event.target == checkoutModal) {
+                closeCheckout.click();
+            }
+        };
 
         // 5. Logout Action
         logoutBtn.addEventListener('click', () => {
