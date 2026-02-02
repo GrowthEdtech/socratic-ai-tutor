@@ -39,8 +39,7 @@
                     <div class="avatar-placeholder"></div>
                 </div>
                 <!-- Login Button (Guest Only) - Official Google Brand -->
-                <button id="web-login-btn" class="google-btn state-guest-only" type="button"
-                    onclick="window.triggerGoogleLogin()">
+                <button id="web-login-btn" class="google-btn state-guest-only" type="button">
                     <div class="google-btn-icon-wrapper">
                         <svg class="google-btn-icon" viewBox="0 0 48 48">
                             <path fill="#EA4335"
@@ -87,7 +86,7 @@
                     <li><span class="icon">✓</span> 1M Context Window</li>
                     <li><span class="icon">✓</span> 7-Day History Access</li>
                 </ul>
-                <button class="btn secondary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                <button class="btn secondary state-guest-only auth-trigger">Sign in to
                     Buy</button>
                 <div id="paypal-button-container-starter" class="paypal-container state-user-only"></div>
             </div>
@@ -104,7 +103,7 @@
                     <li><span class="icon">★</span> Priority Gemini API</li>
                     <li><span class="icon">★</span> 30-Day History</li>
                 </ul>
-                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                <button class="btn primary state-guest-only auth-trigger">Sign in to
                     Buy</button>
                 <div id="paypal-button-container-advance" class="paypal-container state-user-only"></div>
             </div>
@@ -120,7 +119,7 @@
                     <li><span class="icon">★</span> Unlimited Scan History</li>
                     <li><span class="icon">★</span> 24/7 Priority Support</li>
                 </ul>
-                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                <button class="btn primary state-guest-only auth-trigger">Sign in to
                     Buy</button>
                 <div id="paypal-button-container-scholar" class="paypal-container state-user-only"></div>
             </div>
@@ -136,7 +135,7 @@
                     <li><span class="icon">★</span> Everything in Scholar +</li>
                     <li><span class="icon">★</span> Beta Feature Access</li>
                 </ul>
-                <button class="btn primary state-guest-only" onclick="window.triggerGoogleLogin()">Sign in to
+                <button class="btn primary state-guest-only auth-trigger">Sign in to
                     Buy</button>
                 <div id="paypal-button-container-mega" class="paypal-container state-user-only"></div>
             </div>
@@ -272,22 +271,42 @@
             return false;
         };
 
-        // 0. Global Auth Function (Unified for all buttons)
-        window.triggerGoogleLogin = async function () {
-            console.log("Auth Sequence: triggerGoogleLogin called");
+        // 0. Unified Auth Logic
+        async function runGoogleAuthFlow() {
+            console.log("Auth Sequence: Iniciating Google Sign-In...");
+
+            // Visual feedback
+            const allAuthButtons = document.querySelectorAll('#web-login-btn, .auth-trigger');
+            allAuthButtons.forEach(b => {
+                b.style.opacity = '0.7';
+                b.style.pointerEvents = 'none';
+            });
+
             try {
-                // Primary method: Popup for clear feedback
-                await signInWithPopup(auth, provider);
-                console.log("Auth Sequence: Popup successful");
+                // We prefer popup for desktop as it's more intuitive
+                console.log("Auth Sequence: Attempting signInWithPopup");
+                const result = await signInWithPopup(auth, provider);
+                console.log("Auth Sequence: Popup Success", result.user.email);
             } catch (error) {
-                console.warn("Auth Sequence: Popup failed, trying redirect...", error);
-                if (error.code === "auth/popup-blocked" || error.code === "auth/cancelled-popup-request") {
-                    signInWithRedirect(auth, provider);
+                console.warn("Auth Sequence: Popup blocked or failed", error.code);
+
+                // Nuclear fallback to Redirect for mobile/restricted environments
+                if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request' || error.code === 'auth/popup-closed-by-user') {
+                    console.log("Auth Sequence: Pivoting to signInWithRedirect");
+                    await signInWithRedirect(auth, provider);
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    alert("Critical: This domain is not authorized in Firebase Console. Please add your current domain to the authorized list.");
                 } else {
-                    alert("Authentication Error: " + error.code + "\n" + error.message);
+                    console.error("Auth Sequence: Final Error", error);
+                    alert("Authentication Error: " + error.message);
                 }
+            } finally {
+                allAuthButtons.forEach(b => {
+                    b.style.opacity = '1';
+                    b.style.pointerEvents = 'auto';
+                });
             }
-        };
+        }
 
         // 1. Initial Sync from URL Params (Fast display)
         const urlParams = new URLSearchParams(window.location.search);
@@ -385,13 +404,17 @@
             `).join('');
         }
 
-        // 4. Attach Listeners
-        if (loginBtn) {
-            loginBtn.addEventListener('click', (e) => {
+        // 4. Delegated Event Listeners (Bulletproof Pattern)
+        document.addEventListener('click', (e) => {
+            // Check if clicked element is an auth trigger or child of one
+            const target = e.target.closest('#web-login-btn') || e.target.closest('.auth-trigger');
+            if (target) {
                 e.preventDefault();
-                window.triggerGoogleLogin();
-            });
-        }
+                runGoogleAuthFlow();
+            }
+        });
+
+        console.log("System Status: Auth Module Fully Initialized & Delegated");
 
         // 5. Logout Action
         logoutBtn.addEventListener('click', () => {
