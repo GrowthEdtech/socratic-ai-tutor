@@ -243,7 +243,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, updateDoc, arrayUnion, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, arrayUnion, increment, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Firebase Configuration (Matching Extension)
         const firebaseConfig = {
@@ -338,15 +338,33 @@
                 // Update Avatar
                 if (user.photoURL) {
                     profileContainer.innerHTML = `<img src="${user.photoURL}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;">`;
+                } else {
+                    profileContainer.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent-primary);color:white;font-weight:700;border-radius:50%;">${(user.displayName || '?').charAt(0)}</div>`;
                 }
 
-                // Listen for Energy Changes
+                // 2a. User Document Initialization (Ensure profile exists)
                 const userDocRef = doc(db, 'users', user.uid);
-                onSnapshot(userDocRef, (docSnap) => {
+
+                // Real-time synchronization and initialization
+                onSnapshot(userDocRef, async (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         energyCountLabel.innerText = data.energyBalance || 0;
                         renderHistory(data.transactions || []);
+                    } else {
+                        console.log("Web Auth: Creating new user profile in Firestore...");
+                        energyCountLabel.innerText = '0';
+                        try {
+                            await setDoc(userDocRef, {
+                                email: user.email,
+                                displayName: user.displayName,
+                                energyBalance: 0,
+                                transactions: [],
+                                createdAt: serverTimestamp()
+                            }, { merge: true });
+                        } catch (e) {
+                            console.warn("Proactive initialization failed:", e);
+                        }
                     }
                 });
 
