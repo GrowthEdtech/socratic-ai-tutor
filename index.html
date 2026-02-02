@@ -152,69 +152,136 @@
         <section class="pricing" id="pricing">
             <div class="section-label">INVEST IN YOURSELF</div>
             <h2 class="section-title">Select Your Academic Tier</h2>
-            <div class="card">
-                <div class="card-header">
-                    <h3>ENERGY STARTER</h3>
-                    <div class="price">$19.90</div>
+
+            <!-- Dynamic Dashboard Stats (User Only) -->
+            <div class="dashboard-stats state-user-only">
+                <div class="stat-card glass-flat">
+                    <span class="stat-label">Intellectual Strength</span>
+                    <span class="stat-value">Elite</span>
+                    <div class="stat-progress">
+                        <div class="bar" style="width: 85%"></div>
+                    </div>
                 </div>
-                <ul class="features">
-                    <li><span class="icon">⚡</span> 400 Zap Credits</li>
-                    <li><span class="icon">✓</span> AI Socratic Tutoring</li>
-                    <li><span class="icon">✓</span> 1M Context Window</li>
-                    <li><span class="icon">✓</span> 7-Day History Access</li>
-                </ul>
-                <button class="btn secondary state-guest-only auth-trigger">Sign in to Buy</button>
-                <button class="btn secondary state-user-only buy-trigger" data-id="starter" data-price="19.90"
-                    data-zaps="400" data-name="Energy Starter">Upgrade Now</button>
+                <div class="stat-card glass-flat">
+                    <span class="stat-label">Logic Clarity</span>
+                    <span class="stat-value">Deep</span>
+                    <div class="stat-progress">
+                        <div class="bar" style="width: 92%"></div>
+                    </div>
+                </div>
+                <div class="stat-card glass-flat">
+                    <span class="stat-label">Memory Retention</span>
+                    <span class="stat-value">+140%</span>
+                    <div class="stat-progress">
+                        <div class="bar" style="width: 78%"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card pro">
-                <div class="popular-badge">BEST VALUE</div>
-                <div class="card-header">
-                    <h3>ENERGY ADVANCE</h3>
-                    <div class="price">$49</div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>ENERGY STARTER</h3>
+                        <div class="price">$19.90</div>
+                    </div>
+                    <ul class="features">
+                        <li><span class="icon">⚡</span> 400 Zap Credits</li>
+                        <li><span class="icon">✓</span> AI Socratic Tutoring</li>
+                        <li><span class="icon">✓</span> 1M Context Window</li>
+                        <li><span class="icon">✓</span> 7-Day History Access</li>
+                    </ul>
+                    <button class="btn secondary state-guest-only auth-trigger">Sign in to Buy</button>
+                    <button class="btn secondary state-user-only buy-trigger" data-id="starter" data-price="19.90"
+                        data-zaps="400" data-name="Energy Starter">Upgrade Now</button>
                 </div>
-                <ul class="features">
-                    <li><span class="icon">⚡</span> 1,200 Zap Credits</li>
-                    <li><span class="icon">★</span> AI Visual Reasoning</li>
-                    <li><span class="icon">★</span> Priority Gemini API</li>
-                    <li><span class="icon">★</span> 30-Day History</li>
-                </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
-                <button class="btn primary state-user-only buy-trigger" data-id="advance" data-price="49.00"
-                    data-zaps="1200" data-name="Energy Advance">Upgrade Now</button>
-            </div>
 
-            <div class="card premium">
-                <div class="card-header">
-                    <h3>ENERGY SCHOLAR</h3>
-                    <div class="price">$69</div>
+                <div class="card pro">
+                    <div class="popular-badge">BEST VALUE</div>
+                    <div class="card-header">
+                        <h3>ENERGY ADVANCE</h3>
+                        <div class="price">$49</div>
+                    </div>
+                    <ul class="features">
+                        <li><span class="icon">⚡</span> 1,200 Zap Credits</li>
+                        <li><span class="icon">★</span> AI Visual Reasoning</li>
+                        <li><span class="icon">★</span> Priority Gemini API</li>
+                        <li><span class="icon">★</span> 30-Day History</li>
+                    </ul>
+                    <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                    <button class="btn primary state-user-only buy-trigger" data-id="advance" data-price="49.00"
+                        data-zaps="1200" data-name="Energy Advance">Upgrade Now</button>
                 </div>
-                <ul class="features">
-                    <li><span class="icon">⚡</span> 1,800 Zap Credits</li>
-                    <li><span class="icon">★</span> Advanced Reasoning Models</li>
-                    <li><span class="icon">★</span> Unlimited Scan History</li>
-                    <li><span class="icon">★</span> 24/7 Priority Support</li>
-                </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
-                <button class="btn primary state-user-only buy-trigger" data-id="scholar" data-price="69.00"
-                    data-zaps="1800" data-name="Energy Scholar">Upgrade Now</button>
-            </div>
 
-            <div class="card ultimate">
-                <div class="card-header">
-                    <h3>MEGA BUNDLE</h3>
-                    <div class="price">$99</div>
+                <div class="card premium">
+                    <div class="card-header">
+                        <h3>ENERGY SCHOLAR</h3>
+                        <div class="price">$69</div>
+                    </div>
+                    <ul class="features">
+                        <li><span class="icon">⚡</span> 1,800 Zap Credits</li>
+                        <li><span class="icon">★</span> Advanced Reasoning Models</li>
+                        <li><span class="icon">★</span> Unlimited Scan History</li>
+                        <li><span class="icon">★</span> 24/7 Priority Support</li>
+                    </ul>
+                    <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                    <button class="btn primary state-user-only buy-trigger" data-id="scholar" data-price="69.00"
+                        data-zaps="1800" data-name="Energy Scholar">Upgrade Now</button>
                 </div>
-                <ul class="features">
-                    <li><span class="icon">⚡</span> 3,000 Zap Credits</li>
-                    <li><span class="icon">★</span> Personal AI Mentor</li>
-                    <li><span class="icon">★</span> Everything in Scholar +</li>
-                    <li><span class="icon">★</span> Beta Feature Access</li>
-                </ul>
-                <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
-                <button class="btn primary state-user-only buy-trigger" data-id="mega" data-price="99.00"
-                    data-zaps="3000" data-name="Mega Bundle">Upgrade Now</button>
+
+                <div class="card ultimate">
+                    <div class="card-header">
+                        <h3>MEGA BUNDLE</h3>
+                        <div class="price">$99</div>
+                    </div>
+                    <ul class="features">
+                        <li><span class="icon">⚡</span> 3,000 Zap Credits</li>
+                        <li><span class="icon">★</span> Personal AI Mentor</li>
+                        <li><span class="icon">★</span> Everything in Scholar +</li>
+                        <li><span class="icon">★</span> Beta Feature Access</li>
+                    </ul>
+                    <button class="btn primary state-guest-only auth-trigger">Sign in to Buy</button>
+                    <button class="btn primary state-user-only buy-trigger" data-id="mega" data-price="99.00"
+                        data-zaps="3000" data-name="Mega Bundle">Upgrade Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Matrix: Why Pro? -->
+        <section class="comparison glass-flat">
+            <div class="section-label">THE QUANTUM LEAP</div>
+            <h2 class="section-title">Baseline AI vs. <span>Socratic Pro</span></h2>
+            <div class="table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>Baseline (GPT/Free)</th>
+                            <th>Socratic Pro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reasoning Depth</td>
+                            <td>Surface Level (Pattern Match)</td>
+                            <td class="highlight">1st Principle Decomposition</td>
+                        </tr>
+                        <tr>
+                            <td>Visual Intelligence</td>
+                            <td>Basic OCR</td>
+                            <td class="highlight">Spatial Geometry Mastery</td>
+                        </tr>
+                        <tr>
+                            <td>Feedback Loop</td>
+                            <td>Binary (Right/Wrong)</td>
+                            <td class="highlight">Socratic Guidance Matrix</td>
+                        </tr>
+                        <tr>
+                            <td>Memory</td>
+                            <td>32k - 128k Context</td>
+                            <td class="highlight">1,000,000+ Deep Context</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
