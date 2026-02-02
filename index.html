@@ -7,6 +7,9 @@
     <title>Socratic AI Pro | Upgrade Your Learning</title>
     <link rel="stylesheet" href="upgrade.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- PayPal SDK -->
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYMGr_yLQJC1E9jG5XX8pR0X4GEDDsp7PfEFR6J4ZlJ1GFIRK4blB4RsRIgNg9NIb2eyYI1i1AtqEeP8&currency=USD"></script>
 </head>
 
 <body>
@@ -61,7 +64,8 @@
                     <li><span class="icon">✓</span> 1M Context Window</li>
                     <li><span class="icon">✓</span> 7-Day History Access</li>
                 </ul>
-                <button class="btn secondary">Buy Starter</button>
+                <button class="btn secondary" disabled>Energy Starter</button>
+                <div id="paypal-button-container-starter" class="paypal-container"></div>
             </div>
 
             <div class="card pro">
@@ -76,7 +80,8 @@
                     <li><span class="icon">★</span> Priority Gemini API</li>
                     <li><span class="icon">★</span> 30-Day History</li>
                 </ul>
-                <button class="btn primary">Buy Advance Pack</button>
+                <button class="btn primary" id="buy-advance-fallback">Buy Advance Pack</button>
+                <div id="paypal-button-container-advance" class="paypal-container"></div>
             </div>
 
             <div class="card premium">
@@ -90,7 +95,8 @@
                     <li><span class="icon">★</span> Unlimited Scan History</li>
                     <li><span class="icon">★</span> 24/7 Priority Support</li>
                 </ul>
-                <button class="btn primary">Buy Scholar Pack</button>
+                <button class="btn primary" id="buy-scholar-fallback">Buy Scholar Pack</button>
+                <div id="paypal-button-container-scholar" class="paypal-container"></div>
             </div>
 
             <div class="card ultimate">
@@ -104,7 +110,40 @@
                     <li><span class="icon">★</span> Everything in Scholar +</li>
                     <li><span class="icon">★</span> Beta Feature Access</li>
                 </ul>
-                <button class="btn primary">Buy Mega Bundle</button>
+                <button class="btn primary" id="buy-mega-fallback">Buy Mega Bundle</button>
+                <div id="paypal-button-container-mega" class="paypal-container"></div>
+            </div>
+        </section>
+
+        <!-- Energy Consumption Guide -->
+        <section class="energy-rules">
+            <div class="rules-container">
+                <div class="rules-header">
+                    <h2>⚡ Energy Consumption Guide</h2>
+                    <p>Transparent pricing for intelligent reasoning</p>
+                </div>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon">💬</div>
+                        <h4>L1: Discovery Tutor</h4>
+                        <p>Standard text-based guided questioning.</p>
+                        <div class="rule-cost">3 Zaps / Query</div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">👁️</div>
+                        <h4>L2: Visual Tutor</h4>
+                        <p>AI analysis of screenshots and diagrams.</p>
+                        <div class="rule-cost">8 Zaps / Query</div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🧠</div>
+                        <h4>L3: Thinking Mode</h4>
+                        <p>Advanced chain-of-thought reasoning.</p>
+                        <div class="rule-cost">Coming Soon</div>
+                    </div>
+                </div>
+                <p class="rules-note">* Costs are calculated based on AI inference complexity to ensure the highest
+                    quality tutoring.</p>
             </div>
         </section>
 
@@ -177,8 +216,8 @@
     <!-- Firebase SDK Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, arrayUnion, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Firebase Configuration (Matching Extension)
         const firebaseConfig = {
@@ -230,23 +269,53 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         energyCountLabel.innerText = data.energyBalance || 0;
-                        console.log("Web Sync: Energy Updated ->", data.energyBalance);
+                        renderHistory(data.transactions || []);
                     }
                 });
             } else {
-                console.log("Web Sync: Not Authenticated");
                 loginBtn.style.display = 'block';
-                // Keep the URL param data if available, otherwise stay at --
             }
         });
 
-        // 3. Login Action
-        loginBtn.addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Login failed:", error);
-                alert("Synchronization failed. Please check your browser's pop-up blocker.");
+        // 3. Render Transaction History
+        function renderHistory(transactions) {
+            const historyBody = document.getElementById('history-body');
+            const usageBody = document.getElementById('usage-body');
+
+            if (transactions.length === 0) return;
+
+            // Sort by date descending
+            const sorted = [...transactions].sort((a, b) => (b.date?.seconds || 0) - (a.date?.seconds || 0));
+
+            historyBody.innerHTML = sorted.map(t => `
+                <tr>
+                    <td>${t.date ? new Date(t.date.seconds * 1000).toLocaleDateString() : 'Pending'}</td>
+                    <td>${t.packageName}</td>
+                    <td>${t.amount}</td>
+                    <td><span class="status-pill completed">COMPLETED</span></td>
+                </tr>
+            `).join('');
+
+            usageBody.innerHTML = sorted.map(t => `
+                <tr>
+                    <td>${t.date ? new Date(t.date.seconds * 1000).toLocaleDateString() : 'Pending'}</td>
+                    <td>Purchase: ${t.packageName}</td>
+                    <td>+${t.zaps}⚡</td>
+                    <td>--</td>
+                </tr>
+            `).join('');
+        }
+
+        // 4. Login Action (Redirect flow to bypass pop-up blockers)
+        loginBtn.addEventListener('click', () => {
+            signInWithRedirect(auth, provider);
+        });
+
+        // 4. Handle Redirect Result (Catch errors on return)
+        getRedirectResult(auth).catch((error) => {
+            console.error("Login Result Error:", error);
+            if (error.code === 'auth/unauthorized-domain') {
+                alert("Domain not authorized in Firebase Console.");
             }
         });
 
@@ -265,10 +334,71 @@
         });
 
         // Handle Anchor Link
-        if (window.location.hash === '#usage') {
-            const usageBtn = document.querySelector('[data-tab="usage"]');
-            if (usageBtn) usageBtn.click();
+        if (usageBtn) usageBtn.click();
         }
+
+        // --- PayPal Purchase Logic ---
+        function initPayPalButton(containerId, amount, zaps, packageName) {
+            paypal.Buttons({
+                style: {
+                    layout: 'vertical',
+                    color: 'blue',
+                    shape: 'rect',
+                    label: 'paypal'
+                },
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: packageName,
+                            amount: {
+                                currency_code: "USD",
+                                value: amount
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(async function (orderData) {
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        const user = auth.currentUser;
+                        if (user) {
+                            const userDocRef = doc(db, 'users', user.uid);
+                            // Update Energy Balance & Log Transaction
+                            await updateDoc(userDocRef, {
+                                energyBalance: increment(zaps),
+                                transactions: arrayUnion({
+                                    id: orderData.id,
+                                    date: serverTimestamp(),
+                                    amount: `$${amount}`,
+                                    packageName: packageName,
+                                    zaps: zaps,
+                                    status: 'COMPLETED'
+                                })
+                            });
+                            alert(`Purchase Successful! Added ${zaps} Zaps.`);
+                        }
+                    });
+                },
+                onError: function (err) {
+                    console.error('PayPal Error:', err);
+                    alert("Payment failed. Please try again.");
+                }
+            }).render(containerId);
+        }
+
+        // Initialize buttons for different packs
+        // Note: In a real app, you'd check auth before rendering buttons
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Hide fallback buttons and show PayPal
+                document.querySelectorAll('.btn.primary, .btn.secondary').forEach(b => b.style.display = 'none');
+
+                initPayPalButton('#paypal-button-container-starter', "19.90", 400, "Energy Starter");
+                initPayPalButton('#paypal-button-container-advance', "49.00", 1200, "Energy Advance");
+                initPayPalButton('#paypal-button-container-scholar', "69.00", 1800, "Energy Scholar");
+                initPayPalButton('#paypal-button-container-mega', "99.00", 3000, "Mega Bundle");
+            }
+        });
     </script>
 </body>
 
